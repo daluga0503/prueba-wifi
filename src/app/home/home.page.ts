@@ -1,12 +1,31 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+
+import { Network } from '@capacitor/network';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
+export class HomePage implements OnInit {
 
   constructor() {}
 
+  ngOnInit(): void {
+    this.checkNetworkStatus();
+  }
+
+  initializeNetworkListener() {
+    Network.addListener('networkStatusChange', status => {
+      console.log('Network status changed', status);
+    });
+  }
+
+  // Method to check current network status
+  async checkNetworkStatus() {
+    const status = await Network.getStatus();
+    console.log('Current network status:', status);
+  }
 }
+
+
