@@ -15,6 +15,7 @@ export class HomePage implements OnInit {
     this.checkNetworkStatus();
   }
 
+  /*
   initializeNetworkListener() {
     Network.addListener('networkStatusChange', status => {
       console.log('Network status changed', status);
@@ -25,6 +26,17 @@ export class HomePage implements OnInit {
   async checkNetworkStatus() {
     const status = await Network.getStatus();
     console.log('Current network status:', status);
+  }
+  */
+
+  async checkNetworkStatus() {
+    const status = await Network.getStatus();
+    console.log('Current network status:', status);
+
+    // Setting up the listener for network status changes
+    Network.addListener('networkStatusChange', status => {
+      console.log('Network status changed', status);
+    });
   }
 }
 
