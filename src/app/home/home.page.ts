@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Network } from '@capacitor/network';
+import { ConnectionStatus, Network } from '@capacitor/network';
+
 
 @Component({
   selector: 'app-home',
@@ -9,34 +10,34 @@ import { Network } from '@capacitor/network';
 })
 export class HomePage implements OnInit {
 
+
+  networkStatusChange:string ="";
+
+  networkStatus!: ConnectionStatus
+
+
   constructor() {}
 
   ngOnInit(): void {
-    this.checkNetworkStatus();
-  }
+    Network.getStatus().then((status)=>{
+      this.networkStatus = status;
+      console.log(this.networkStatus);
+    })
+    Network.addListener( "networkStatusChange", (status) =>{
+      this.networkStatus = status;
+      console.log(this.networkStatus);
+    })
 
-  /*
-  initializeNetworkListener() {
-    Network.addListener('networkStatusChange', status => {
-      console.log('Network status changed', status);
-    });
-  }
-
-  // Method to check current network status
-  async checkNetworkStatus() {
-    const status = await Network.getStatus();
-    console.log('Current network status:', status);
-  }
-  */
-
-  async checkNetworkStatus() {
-    const status = await Network.getStatus();
-    console.log('Current network status:', status);
-
-    // Setting up the listener for network status changes
-    Network.addListener('networkStatusChange', status => {
-      console.log('Network status changed', status);
-    });
+    /*
+    window.addEventListener('online', ()=>{
+      console.log('online');
+      this.networkStatusChange="online"
+    })
+    window.addEventListener('offline', () => {
+      console.log('offline');
+      this.networkStatusChange = "offline";
+    })
+    */
   }
 }
 
